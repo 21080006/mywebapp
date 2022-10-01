@@ -1,22 +1,27 @@
+from multiprocessing import context
 from winreg import QueryValue
 from django.shortcuts import render
 from django.http import HttpResponse, Http404, HttpResponseRedirect
 from django.template import loader
 from django.urls import reverse
 from django.shortcuts import get_object_or_404, render
+from django.views.generic import ListView
 
 # Create your views here.
 from .models import Question, Choice
 
-def index(request):
-    latest_question_list = Question.objects.order_by('-pub_date')[:10]
-    template = loader.get_template('polls/index.html')
-    context = {
-        'mensaje': 'Lista de preguntas',
-        'ultimas_preguntas': latest_question_list,
-    }
-    return render(request, 'polls/index.html', context)
-    #return HttpResponse(output)
+class IndexView(ListView):
+    template_name = 'polls/index.html' #reusando codigo del template del listview
+    context_object_name =  'latest_questions'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['mensaje'] = 'Lista de encuestas'
+        return context
+    
+    def get_queryset(self):
+        query = Question.objects.order_by('-pub_date')[:5]
+        return query
 
 #def hola_dos(request):
  #   return HttpResponse("hola Mundo/2")
