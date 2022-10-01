@@ -1,0 +1,16 @@
+<h1>{{mensaje}}</h1>
+<p>Nombre de la encuesta: {{question.question_text}}</p>
+<p>Fecha publicacion: {{question.pub_date}}</p>
+<p>Status: {{question.status}}</p>
+
+{% if question.status %}
+    <p>status:  Habilitada</p>
+{% else %}
+    <p>status: No Habilitada</p>
+{% endif %}
+<h1>{{ question.question_text }}</h1>
+<ul>
+{% for choice in question.choice_set.all %}
+    <li>{{ choice.choice_text }}</li>
+{% endfor %}
+</ul>
