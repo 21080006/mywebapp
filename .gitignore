@@ -1,3 +1,5 @@
 #se agrega lo que no queremos que pase al repositorio
 venv
 .vscode
+postgres_docker
+*.pyc
