@@ -4,11 +4,12 @@ from django.shortcuts import render
 from django.http import HttpResponse, Http404, HttpResponseRedirect
 from django.template import loader
 from django.urls import reverse
-from django.shortcuts import get_object_or_404, render
+from django.shortcuts import get_object_or_404, render, redirect
 from django.views.generic import ListView
 
 # Create your views here.
 from .models import Question, Choice
+from .forms import QuestionForm 
 
 class IndexView(ListView):
     template_name = 'polls/index.html' #reusando codigo del template del listview
@@ -60,3 +61,20 @@ def vote(request, question_id):
         # with POST data. This prevents data from being posted twice if a
         # user hits the Back button.
         return HttpResponseRedirect(reverse('polls:results', args=(question.id,)))
+
+def add_or_change_question(request,question_id):
+    question = None
+    if question_id:
+        question = get_object_or_404(Question, pk=question_id)
+        if request.method == "POST":
+            form = QuestionForm(
+            data=request.POST,
+            files=request.FILES,
+            instance=question)
+            if form.is_valid():
+                question = form.save()
+                return redirect("polls:detail", pk=question.pk)
+        else:
+            form = QuestionForm(instance=question)
+    context = {"question": question, "form": form}
+    return render(request, "polls/polls_form.html", context)

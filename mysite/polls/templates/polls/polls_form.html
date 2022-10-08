@@ -1,0 +1,9 @@
+<a href="{% url 'polls:index' %}">Lista de encuentas</a>
+<h1>
+    {% if question %}
+        Cambiar encuesta {{ question.question_text }}
+    {% else %}
+        Agregar encuenta
+    {% endif %}
+</h1>
+{{ form }}
