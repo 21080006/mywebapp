@@ -73,7 +73,7 @@ def add_or_change_question(request,question_id):
             instance=question)
             if form.is_valid():
                 question = form.save()
-                return redirect("polls:detail", pk=question.pk)
+                return HttpResponseRedirect(reverse('polls:detail', args=(question.id,)))
         else:
             form = QuestionForm(instance=question)
     context = {"question": question, "form": form}

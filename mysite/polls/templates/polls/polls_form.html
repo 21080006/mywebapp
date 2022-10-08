@@ -6,6 +6,8 @@
         Agregar encuenta
     {% endif %}
 </h1>
-<form action="" method="post"></form>
-{{ form }}
-<input type="submit" value="Guardar">
+<form action="" method="post">
+    {% csrf_token %}
+    {{ form }}
+    <input type="submit" value="Guardar">
+</form>
